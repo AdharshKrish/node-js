@@ -9,6 +9,7 @@ var client  = new net.Socket();
 client.connect({
   port:2222
 });
+var dport,JSend = {"id":"17EC116","client":["app",null],"data":"connected"};
 
 client.on('connect',function(){
   console.log('Client: connection established with server');
@@ -16,27 +17,18 @@ client.on('connect',function(){
   console.log('---------client details -----------------');
   var address = client.address();
   var port = address.port;
+  dport = port;
   var family = address.family;
   var ipaddr = address.address;
   console.log('Client is listening at port' + port);
   console.log('Client ip :' + ipaddr);
   console.log('Client is IP4/IP6 : ' + family);
 
+  JSend.client[1]=port;
 
-  // writing data to server
-  client.write('hello from client');
+  client.write(JSON.stringify(JSend));
 
 });
-
-client.setEncoding('utf8');
-
-client.on('data',function(data){
-  console.log('Data from server:' + data);
-});
-
-// setTimeout(function(){
-//   client.end('Bye bye server');
-// },15000);
 
 const readline = require('readline');
 
@@ -44,14 +36,14 @@ const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
   });
-  
+
   rl.question('', (answer)=>{
-      sendData(answer)
+    sendData(answer)
   });
 
   function sendData(answer){
-        client.write(answer);
-        console.log(`Data sent to server: ${answer}`);
+        JSend.data = answer;
+        client.write(JSON.stringify(JSend));
         if(answer=="bye"){
             client.end();
             rl.close();
@@ -62,25 +54,17 @@ const rl = readline.createInterface({
             });
         }
   }
-//NOTE:--> all the events of the socket are applicable here..in client...
 
+client.setEncoding('utf8');
 
-// -----------------creating client using net.connect instead of custom socket-------
+client.on('data',function(data){
+    if(data=="bye"){
+        console.log("mcu offline")
+        client.end();
+        process.exit()
+    }
+    else{
+        console.log(data)
+    }
+});
 
-// server creation using net.connect --->
-// u can also => write the below code in seperate js file
-// open new node instance => and run it...
-
-
-// const clients = net.connect({port: 2222}, () => {
-//   // 'connect' listener
-//   console.log('connected to server!');
-//   clients.write('world!\r\n');
-// });
-// clients.on('data', (data) => {
-//   console.log(data.toString());
-//   clients.end();
-// });
-// clients.on('end', () => {
-//   console.log('disconnected from server');
-// });

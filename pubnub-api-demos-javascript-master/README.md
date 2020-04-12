@@ -1,0 +1,26 @@
+# PubNub JS SDK Demo Code
+
+## Set up
+
+Be sure to insert your PubNub API Keys in each of the HTML files in this repository.
+
+```javascript
+const pubnub = new PubNub({
+    publishKey: "pub-c-61c84398-283c-4923-a72e-e6804586a45a",
+    subscribeKey: "sub-c-5c18f472-5eb1-11ea-b7ea-f2f107c29c38"
+});
+```
+
+PubNub accounts are **free** up to 1 million transactions per month.
+
+<a href="https://dashboard.pubnub.com/signup?devrel_gh=pubnub-api-demos-js">
+    <img alt="PubNub Signup" src="https://i.imgur.com/og5DDjf.png" width=260 height=97/>
+</a>
+
+## Running
+
+Open any of the HTML files in your favorite web browser. No need to run a web server. Use the [file URI scheme](https://en.wikipedia.org/wiki/File_URI_scheme) in your browser's address input to navigate to the HTML file on your computer.
+
+## Videos of This Code in Action
+
+Check out the [PubNub Quickstarts](https://www.pubnub.com/docs/getting-started-guides/pubnub-publish-subscribe?devrel_gh=pubnub-js-quickstart) for video commentary of this code in action.
